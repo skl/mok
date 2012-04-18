@@ -13,9 +13,9 @@ class Mok
         $this->locked = (bool) $locked;
     }
 
-    public function __set($name, $value)
+    public function __set($expected, $returned)
     {
-        $this->map[$name] = $value;
+        $this->map[$expected] = $returned;
         return $this;
     }
 
