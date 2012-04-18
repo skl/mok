@@ -13,10 +13,10 @@ $m->foo(5, 10); // last parameter is always return value
 
 $mo = new Mok;
 $mo->duck = 'quack';
-$mo->lock(); // lock() prevents further methods from being created, allowing for execution instead
+$mo->___lock(); // ___lock() prevents further methods from being created, allowing for execution instead
 
 $m->mo = $mo;
-$m->lock();
+$m->___lock();
 
 print $m->foo(5) . PHP_EOL;   // prints 10
 print $m->bar . PHP_EOL;      // prints baz
@@ -32,7 +32,7 @@ $m = new Mok;
 $m->foo(1,2)
   ->foo(2,4);
 
-$m->lock();
+$m->___lock();
                                                                                                                                        
 echo $m->foo(1) . PHP_EOL; // 2
 echo $m->foo(2) . PHP_EOL; // 4
