@@ -1,5 +1,4 @@
-Example usage
-=============
+# Example usage
 
 ```php
 <?php
@@ -22,4 +21,19 @@ $m->lock();
 print $m->foo(5) . PHP_EOL;   // prints 10
 print $m->bar . PHP_EOL;      // prints baz
 print $m->mo->duck . PHP_EOL; // prints quack
+```
+
+## Another example
+
+```php
+<?php
+
+$m = new Mok;
+$m->foo(1,2)
+  ->foo(2,4);
+
+$m->lock();
+                                                                                                                                       
+echo $m->foo(1) . PHP_EOL; // 2
+echo $m->foo(2) . PHP_EOL; // 4
 ```
