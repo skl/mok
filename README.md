@@ -1,4 +1,5 @@
-= Example usage =
+Example usage
+=============
 
 ```php
 <?php
