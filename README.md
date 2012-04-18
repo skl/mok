@@ -1,11 +1,13 @@
-example usage:
+= Example usage =
 
 ```php
-$m = new mok;
+<?php
+
+$m = new Mok;
 $m->bar = 'baz';
 $m->foo(5, 10); // last parameters is always return value
 
-$mo = new mok;
+$mo = new Mok;
 $mo->duck = 'quack';
 $mo->lock();
 
