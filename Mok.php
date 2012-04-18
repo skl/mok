@@ -1,17 +1,14 @@
 <?php
 
-class mok{
+class Mok
+{
     private $locked = false;
+
     private $map = array();
 
     public function lock($locked = true)
     {
         $this->locked = (bool) $locked;
-    }
-
-    public function ad($fp,$r){
-        $this->map[$fp] = $r;
-        return $this;
     }
 
     public function __set($name, $value)
@@ -42,17 +39,3 @@ class mok{
         return print_r($this->map, true);
     }
 }
-$m = new mok;
-$m->bar = 'baz';
-$m->foo(5, new mokc(10, 1, '>=')); // last parameters is always return value
-
-$mo = new mok;
-$mo->duck = 'quack';
-$mo->lock();
-$m->mo = $mo;
-
-$m->lock();
-
-print $m->foo(5) . PHP_EOL; // prints 10
-print $m->bar . PHP_EOL; // prints baz
-print $m->mo->duck . PHP_EOL;
