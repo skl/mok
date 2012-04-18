@@ -86,10 +86,11 @@ class Mok
     {
         if ($this->_locked) {
             $fp = "$methodName(" . implode(',', $arguments) . ")";
-            return in_array(
-                $fp,
-                array_keys($this->_map)
-            ) ? $this->_map[$fp] : throw new Exception("Method {$methodName}() was not defined!");
+            if (in_array($fp, array_keys($this->_map))) {
+                return $this->_map[$fp] ;
+            } else {
+                throw new Exception("Method {$methodName}() was not defined!") ;
+            }
         } else {
 
             $returnValue = array_pop($arguments);
