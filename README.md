@@ -5,7 +5,11 @@ Example usage
 <?php
 
 $m = new Mok;
+
+// Create public property 'bar' with value 'baz'
 $m->bar = 'baz';
+
+// Create method 'foo', expecting one parameter '5', returning 10
 $m->foo(5, 10); // last parameter is always return value
 
 $mo = new Mok;
