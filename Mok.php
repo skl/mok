@@ -1,5 +1,7 @@
 <?php
 
+require_once 'MokC.php';
+
 class Mok
 {
     private $locked = false;
@@ -29,6 +31,12 @@ class Mok
             return in_array($fp,array_keys($this->map)) ? $this->map[$fp] : 'not implemented';
         } else {
             $returnValue = array_pop($arguments);
+
+            if ($returnValue instanceof MokC) {
+                // TODO handle expected access
+                $returnValue = $returnValue->getReturnValue();
+            }
+
             $this->map["$name(" . implode(',', $arguments) . ')'] = $returnValue;
             return $this;
         }
