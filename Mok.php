@@ -1,66 +1,97 @@
 <?php
+/**
+ * Mok
+ *
+ * @package Mok
+ * @author  "Adam McAuley" <amcauley@plus.net>
+ * @author  "Stephen Lang" <slang@plus.net>
+ * @link    https://github.com/skl/mok
+ */
 
 require_once 'MokC.php';
 
+/**
+ * Mok
+ *
+ * @package Mok
+ * @author  "Adam McAuley" <amcauley@plus.net>
+ * @author  "Stephen Lang" <slang@plus.net>
+ * @link    https://github.com/skl/mok
+ */
 class Mok
 {
     /**
-     * @access private
-     * @var boolean $locked
+     * @var boolean $locked FALSE allows methods to be added to $map
      */
-    private $locked = false;
-    
+    private $_locked = false;
+
     /**
-     * @access private
-     * @var $map
+     * @var array $map Hashmap containing function signatures and return values
      */
-    private $map = array();
-    
+    private $_map = array();
+
     /**
-     * lock object so methods can be executed
+     * Lock object so that previously created methods can be executed
      *
-     * @access public
-     * @param boolean $locked
-     * @return void
+     * @param boolean $locked TRUE (default) prevents further methods from
+     *                        being added to the hashmap
+     *
+     * @return Mok
      */
-    public function lock($locked = true)
+    public function ___lock($locked = true)
     {
-        $this->locked = (bool) $locked;
-    }
-    
-    /**
-     * 
-     * @access public
-     * @param $input 
-     * @param $output the expected return value
-     */
-    public function __set($input, $output)
-    {
-        $this->map[$input] = $output;
+        $this->_locked = (bool) $locked;
         return $this;
-    }
-    
-    /**
-     * @param $name
-     * @return $map
-     */
-    public function __get($name)
-    {
-        return $this->map[$name];
     }
 
     /**
-     * @access public
-     * @param $name
-     * @param $arguments
+     * Magic setter used for creating mock properties
+     *
+     * @param string $property    The name of the mock property to create
+     * @param mixed  $returnValue The value to return upon property access
+     *
+     * @return Mok
      */
-    public function __call($name, $arguments)
+    public function __set($property, $returnValue)
     {
-        if ($this->locked) {
-            $fp = "$name(" . implode(',', $arguments) . ")";
-            return in_array($fp,array_keys($this->map)) ? $this->map[$fp] : 'not implemented';
+        if (!$this->_locked) {
+            $this->_map[$property] = $returnValue;
+        }
+        return $this;
+    }
+
+    /**
+     * Magic getter used to access mock properties
+     *
+     * @param string $property The name of the property to access
+     *
+     * @return mixed The return value of the property
+     */
+    public function __get($property)
+    {
+        return $this->_map[$property];
+    }
+
+    /**
+     * Magic method used to create mock methods (when unlocked) or execute mock
+     * methos (when locked).
+     *
+     * @param string $methodName The name of the method to create/execute
+     * @param array  $arguments  The arguments to expect/pass to the method.
+     *                           Final argument when creating a method is always the return value.
+     *
+     * @return mixed The return value of the method
+     */
+    public function __call($methodName, $arguments)
+    {
+        if ($this->_locked) {
+            $fp = "$methodName(" . implode(',', $arguments) . ")";
+            return in_array(
+                $fp,
+                array_keys($this->_map)
+            ) ? $this->_map[$fp] : throw new Exception("Method {$methodName}() was not defined!");
         } else {
-            
+
             $returnValue = array_pop($arguments);
 
             if ($returnValue instanceof MokC) {
@@ -68,17 +99,19 @@ class Mok
                 $returnValue = $returnValue->getReturnValue();
             }
 
-            $this->map["$name(" . implode(',', $arguments) . ')'] = $returnValue;
+            $this->_map["$name(" . implode(',', $arguments) . ')'] = $returnValue;
             return $this;
         }
     }
-    
+
     /**
-     * @access public
+     * Magic toString method provides string representation of the hashmap for
+     * debugging purposes
+     *
      * @return string
      */
     public function __toString()
     {
-        return print_r($this->map, true);
+        return print_r($this->_map, true);
     }
 }
