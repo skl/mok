@@ -14,7 +14,7 @@ $m->foo(5, 10); // last parameter is always return value
 
 $mo = new Mok;
 $mo->duck = 'quack';
-$mo->lock();
+$mo->lock(); // lock() prevents further methods from being created, allowing for execution instead
 
 $m->mo = $mo;
 $m->lock();
