@@ -1,3 +1,5 @@
+example usage:
+
 $m = new mok;
 $m->bar = 'baz';
 $m->foo(5, new mokc(10, 1, '>=')); // last parameters is always return value
@@ -12,3 +14,5 @@ $m->lock();
 print $m->foo(5) . PHP_EOL; // prints 10
 print $m->bar . PHP_EOL; // prints baz
 print $m->mo->duck . PHP_EOL;
+
+
