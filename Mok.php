@@ -100,7 +100,7 @@ class Mok
                 $returnValue = $returnValue->getReturnValue();
             }
 
-            $this->_map["$name(" . implode(',', $arguments) . ')'] = $returnValue;
+            $this->_map["$methodName(" . implode(',', $arguments) . ')'] = $returnValue;
             return $this;
         }
     }
